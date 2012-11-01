@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>istic.networks - Bespoke Typing</title>
+<link rel="stylesheet" media="all" href="/assets/steelfish/stylesheet.css"/>
+<meta name="google-site-verification" content="ytAssCl5v9JE83-ppBkSDVCCfxzKcUoQRsUefcAIQ0A" />
+<style type="text/css">
+
+body {
+    font-family: 'SteelfishRegular';
+    background: white;
+    color: black;
+    font-size: larger;
+}
+
+p {
+    clear: both;
+}
+
+.tagline, .contact, footer {
+    text-align: center;
+}
+
+footer {
+    font-size: small;
+}
+
+.slideshow { height: 727px; width: 1069px; margin: auto; overflow: none; }
+.slideshow img { padding: 15px; border: 1px solid #ccc; background-color: #eee; }
+</style>
+<!-- include jQuery library -->
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js">
+</script>
+<!-- include Cycle plugin -->
+<script type="text/javascript" src="http://cloud.github.com/downloads/malsup/cycle/jquery.cycle.all.latest.js">
+</script>
+<script type="text/javascript">
+var rotateImages = function() {
+
+    $('.slideshow').cycle({
+		fx: 'fade',
+	});
+};
+
+
+$(document).ready(function(){
+    for(i=0;i<15;i++){
+	var randomnumber=Math.floor(Math.random()*50)
+	$('.slideshow').append('<img src="https://s3-eu-west-1.amazonaws.com/istic-splash/'+randomnumber+'.png" width="1039" height="697" alt="1" style="display: none;" />');
+    }
+	setTimeout(rotateImages, 10000);
+});
+</script>
+</head>
+<body>
+	<div class="slideshow">
+        <img src="https://s3-eu-west-1.amazonaws.com/istic-splash/0.png" width="1039" height="697" alt="0" id="mainlogo">
+	</div>
+	
+	<p class="tagline">Bespoke Typing. Est. 2010.</p>
+	
+	<p class="contact"><a href="mailto:conversational@istic.net">conversational@istic.net</a></p>
+	
+	<footer>&copy; Istic Networks Ltd. 2011. Istic Networks is a UK registered company, no. <a href="http://opencorporates.com/companies/uk/07439954">07439954</a></footer>
+	
+</body>
+</html>
+
