@@ -25,43 +25,114 @@ footer {
     font-size: small;
 }
 
-.slideshow { height: 727px; width: 1069px; margin: auto; overflow: none; }
-.slideshow img { padding: 15px; border: 1px solid #ccc; background-color: #eee; }
+.slideshow { 
+	max-width: 1039px; 
+	width: 100%;  
+	overflow: none; 
+	}
+
+.slideshow img {
+	max-width: 1039px;
+	width: 94%;
+	position: absolute;
+	background: #eee  no-repeat center center;
+	padding: 2%; 
+	margin: auto;
+	border: 1px solid #ccc; 
+}
 </style>
 <!-- include jQuery library -->
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js">
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js">
 </script>
-<!-- include Cycle plugin -->
-<script type="text/javascript" src="http://cloud.github.com/downloads/malsup/cycle/jquery.cycle.all.latest.js">
-</script>
-<script type="text/javascript">
-var rotateImages = function() {
+<script type="text/javascript" src="jquery.batchImageLoad.js"></script>
 
-    $('.slideshow').cycle({
-		fx: 'fade',
-	});
+<script type="text/javascript">
+
+var alignElement = function(element){
+	// Horizontally Center Align this fixed-position element
+	windowWidth = $(window).width();
+	elementWidth = element.outerWidth();
+	
+	left = (windowWidth - elementWidth)/2
+	
+	element.css("left", left);
+}
+
+var rotateImages = function() {
+	thisimage = $(".shown");
+		
+	nextthing = thisimage.next();
+	if(nextthing.length == 0){
+		nextthing = $($(".slideshow img")[0])
+		nextthing.addClass("shown");
+		nextthing.show();
+		thisimage.fadeOut("slow", populateRandomImages);
+		return;
+	}
+	
+	thisimage.fadeOut("slow", function(){  });
+	alignElement(nextthing);
+	
+	$(".slideshow").height($(".slideshow img.shown")[0].height+60);
+	
+	nextthing.fadeIn("slow");
+	thisimage.removeClass("shown");
+	nextthing.addClass("shown");
+	setTimeout(rotateImages, 5000);
+	
 };
+
+var populateRandomImages = function(){
+	$(".slideshowimage").remove();
+
+    for(i=0;i<15;i++){
+		var randomnumber=Math.floor(Math.random()*50)
+		$('.slideshow').append('<img class="slideshowimage" src="https://s3-eu-west-1.amazonaws.com/istic-splash/'+randomnumber+'.png" alt="1" style="display: none;" />');
+    }
+	
+	$(".slideshow").find('img').batchImageLoad({
+		loadingCompleteCallback: rotateImages
+	});
+	
+}
 
 
 $(document).ready(function(){
-    for(i=0;i<15;i++){
-	var randomnumber=Math.floor(Math.random()*50)
-	$('.slideshow').append('<img src="https://s3-eu-west-1.amazonaws.com/istic-splash/'+randomnumber+'.png" width="1039" height="697" alt="1" style="display: none;" />');
-    }
-	setTimeout(rotateImages, 10000);
+	populateRandomImages();
+
+	
+	$(window).resize(function(){
+		alignElement($(".slideshow img"));
+		
+		imgheight = $(".slideshow img.shown")[0].height;
+		$(".slideshow").height(imgheight+40);
+		}
+		
+	);
+
+	$("#mainlogo").load(function(){
+		imgheight = $(".slideshow img.shown")[0].height;
+		$(".slideshow").height(imgheight+40);
+		alignElement($(".slideshow img"));
+		$(".slideshow").height($(".slideshow img.shown")[0].height+40);
+	})
+	
 });
+
+
 </script>
 </head>
 <body>
 	<div class="slideshow">
-        <img src="https://s3-eu-west-1.amazonaws.com/istic-splash/0.png" width="1039" height="697" alt="0" id="mainlogo">
+		<img src="https://s3-eu-west-1.amazonaws.com/istic-splash/0.png" class="shown" width="1039" height="697" alt="0" id="mainlogo">
 	</div>
 	
+		<br style="clear: both"/>
 	<p class="tagline">Bespoke Typing. Est. 2010.</p>
 	
 	<p class="contact"><a href="mailto:conversational@istic.net">conversational@istic.net</a></p>
 	
-	<footer>&copy; Istic Networks Ltd. 2011. Istic Networks is a UK registered company, no. <a href="http://opencorporates.com/companies/uk/07439954">07439954</a></footer>
+	<footer>&copy; Istic Networks Ltd. 2013. Istic Networks is a UK registered company, no. <a href="http://opencorporates.com/companies/uk/07439954">07439954</a></footer>
 	
 </body>
 </html>
